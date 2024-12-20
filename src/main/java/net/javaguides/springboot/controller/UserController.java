@@ -7,6 +7,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.context.request.WebRequest;
+import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 
 import net.javaguides.springboot.entity.User;
@@ -37,7 +38,7 @@ public class UserController {
 
     // http://localhost:8080/api/users
     @PostMapping
-    public ResponseEntity<UserDto> createUser(@RequestBody UserDto user) {
+    public ResponseEntity<UserDto> createUser(@Valid @RequestBody UserDto user) {
         UserDto savedUser = userService.createUser(user);
         return new ResponseEntity<>(savedUser, HttpStatus.CREATED);
     }
@@ -58,7 +59,8 @@ public class UserController {
 
     @PutMapping("{id}")
     // http://localhost:8080/api/users/1
-    public ResponseEntity<UserDto> updateUser(@PathVariable long id, @RequestBody UserDto user) {
+    public ResponseEntity<UserDto> updateUser(@PathVariable long id,
+            @Valid @RequestBody UserDto user) {
         user.setId(id);
         UserDto updatedUser = userService.updateUser(user);
         return ResponseEntity.ok(updatedUser);

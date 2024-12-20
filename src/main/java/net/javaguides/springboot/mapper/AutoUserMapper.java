@@ -1,7 +1,6 @@
 package net.javaguides.springboot.mapper;
 
 import org.mapstruct.Mapper;
-import org.mapstruct.Mapping;
 import org.mapstruct.factory.Mappers;
 import net.javaguides.springboot.dto.UserDto;
 import net.javaguides.springboot.entity.User;
