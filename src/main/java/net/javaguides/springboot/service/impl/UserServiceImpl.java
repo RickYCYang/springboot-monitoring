@@ -13,6 +13,7 @@ import net.javaguides.springboot.exception.EmailAlreadyExistsException;
 import net.javaguides.springboot.exception.ResourceNotFoundException;
 import net.javaguides.springboot.mapper.AutoUserMapper;
 import net.javaguides.springboot.mapper.UserMapper;
+import net.javaguides.springboot.repository.UserDao;
 import net.javaguides.springboot.repository.UserRepository;
 import net.javaguides.springboot.service.UserService;
 
@@ -23,7 +24,11 @@ public class UserServiceImpl implements UserService {
     private UserRepository userRepository;
 
     // @Autowired
+    private UserDao userDao;
+
+    // @Autowired
     private ModelMapper modelMapper;
+
 
     @Override
     public UserDto createUser(UserDto userDto) {
@@ -88,6 +93,12 @@ public class UserServiceImpl implements UserService {
         User existingUser = userRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("User", "id", id));
         userRepository.deleteById(id);
+    }
+
+    @Override
+    public UserDto getUserByIdFromSql(long id) {
+        User user = userDao.findById(id);
+        return AutoUserMapper.MAPPER.mapToUserDto(user); // convert to DTO by MapStruct lib
     }
 
 }

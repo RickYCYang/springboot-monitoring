@@ -16,6 +16,7 @@ import lombok.AllArgsConstructor;
 import net.javaguides.springboot.entity.User;
 import net.javaguides.springboot.exception.ErrorDetails;
 import net.javaguides.springboot.exception.ResourceNotFoundException;
+import net.javaguides.springboot.repository.UserDao;
 import net.javaguides.springboot.service.UserService;
 import net.javaguides.springboot.dto.UserDto;
 
@@ -27,6 +28,8 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+
 
 @Tag(name = "CRUD REST APIs for User Resource",
         description = "CRUD REST APIs - Create User, Update User, Get User, Get All Users, Delete User")
@@ -35,9 +38,8 @@ import org.springframework.web.bind.annotation.PutMapping;
 @RequestMapping("api/users")
 public class UserController {
 
-    @Autowired
+    // @Autowired
     private UserService userService;
-
 
     // http://localhost:8080/api/users
     @Operation(summary = "Create a new User", description = "Create a new User")
@@ -84,6 +86,12 @@ public class UserController {
         userService.deleteUser(id);
         return ResponseEntity.ok("User sucessfully deleted!");
     }
+
+    @GetMapping("user/{id}")
+    public UserDto getMethodName(@PathVariable long id) {
+        return userService.getUserByIdFromSql(id);
+    }
+
 
     // a specific exception handler for the current controller
     // @ExceptionHandler(ResourceNotFoundException.class)
