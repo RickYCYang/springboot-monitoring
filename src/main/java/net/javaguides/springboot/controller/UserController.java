@@ -7,6 +7,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.context.request.WebRequest;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 
@@ -25,8 +28,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PutMapping;
 
-
-
+@Tag(name = "CRUD REST APIs for User Resource",
+        description = "CRUD REST APIs - Create User, Update User, Get User, Get All Users, Delete User")
 @RestController
 @AllArgsConstructor
 @RequestMapping("api/users")
@@ -37,6 +40,8 @@ public class UserController {
 
 
     // http://localhost:8080/api/users
+    @Operation(summary = "Create a new User", description = "Create a new User")
+    @ApiResponse(responseCode = "201", description = "User created successfully")
     @PostMapping
     public ResponseEntity<UserDto> createUser(@Valid @RequestBody UserDto user) {
         UserDto savedUser = userService.createUser(user);
@@ -44,6 +49,8 @@ public class UserController {
     }
 
     // http://localhost:8080/api/users/1
+    @Operation(summary = "Get User by Id", description = "Get User by Id")
+    @ApiResponse(responseCode = "200", description = "User found successfully")
     @GetMapping("{id}")
     public ResponseEntity<UserDto> getUserById(@PathVariable long id) {
         UserDto user = userService.getUserById(id);
@@ -51,14 +58,18 @@ public class UserController {
     }
 
     // http://localhost:8080/api/users
+    @Operation(summary = "Get All Users", description = "Get All Users")
+    @ApiResponse(responseCode = "200", description = "All Users found successfully")
     @GetMapping
     public ResponseEntity<List<UserDto>> getAllUsers() {
         List<UserDto> users = userService.getAllUSers();
         return ResponseEntity.ok(users);
     }
 
-    @PutMapping("{id}")
     // http://localhost:8080/api/users/1
+    @Operation(summary = "Update User by Id", description = "Update User by Id")
+    @ApiResponse(responseCode = "200", description = "User updated successfully")
+    @PutMapping("{id}")
     public ResponseEntity<UserDto> updateUser(@PathVariable long id,
             @Valid @RequestBody UserDto user) {
         user.setId(id);
@@ -66,6 +77,8 @@ public class UserController {
         return ResponseEntity.ok(updatedUser);
     }
 
+    @Operation(summary = "Delete User by Id", description = "Delete User by Id")
+    @ApiResponse
     @DeleteMapping("{id}")
     public ResponseEntity<String> deleteUser(@PathVariable long id) {
         userService.deleteUser(id);
@@ -79,7 +92,6 @@ public class UserController {
     // ErrorDetails errorDetails = new ErrorDetails(LocalDateTime.now(), exception.getMessage(),
     // webRequest.getDescription(false), "USER_NOT_FOUND");
     // return new ResponseEntity<>(errorDetails, HttpStatus.NOT_FOUND);
-
     // }
 
 }
