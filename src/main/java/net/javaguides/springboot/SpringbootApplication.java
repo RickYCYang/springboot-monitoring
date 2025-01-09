@@ -21,11 +21,6 @@ import io.swagger.v3.oas.annotations.info.License;
 				description = "Spring Boot User Management Documentation", url = "www.google.com"))
 public class SpringbootApplication {
 
-	@Bean // ModelMapper is used to convert JPA entity into DTO
-	public ModelMapper modelMapper() {
-		return new ModelMapper();
-	}
-
 	public static void main(String[] args) {
 		SpringApplication.run(SpringbootApplication.class, args);
 	}

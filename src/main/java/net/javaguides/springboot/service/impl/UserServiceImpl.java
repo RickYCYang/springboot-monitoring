@@ -3,17 +3,13 @@ package net.javaguides.springboot.service.impl;
 import java.util.List;
 import java.util.Optional;
 import org.modelmapper.ModelMapper;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import jakarta.annotation.Resource;
 import lombok.AllArgsConstructor;
 import net.javaguides.springboot.dto.UserDto;
 import net.javaguides.springboot.entity.User;
 import net.javaguides.springboot.exception.EmailAlreadyExistsException;
 import net.javaguides.springboot.exception.ResourceNotFoundException;
 import net.javaguides.springboot.mapper.AutoUserMapper;
-import net.javaguides.springboot.mapper.UserMapper;
-import net.javaguides.springboot.repository.UserDao;
 import net.javaguides.springboot.repository.UserRepository;
 import net.javaguides.springboot.service.UserService;
 
@@ -22,9 +18,6 @@ import net.javaguides.springboot.service.UserService;
 public class UserServiceImpl implements UserService {
     // @Autowired
     private UserRepository userRepository;
-
-    // @Autowired
-    private UserDao userDao;
 
     // @Autowired
     private ModelMapper modelMapper;
@@ -96,8 +89,8 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public UserDto getUserByIdFromSql(long id) {
-        User user = userDao.findById(id);
+    public UserDto getUserByIdSql(long id) {
+        User user = userRepository.findByIdSql(id);
         return AutoUserMapper.MAPPER.mapToUserDto(user); // convert to DTO by MapStruct lib
     }
 

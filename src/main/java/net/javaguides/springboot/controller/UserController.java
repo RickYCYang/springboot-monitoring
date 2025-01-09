@@ -88,8 +88,8 @@ public class UserController {
     }
 
     @GetMapping("user/{id}")
-    public UserDto getMethodName(@PathVariable long id) {
-        return userService.getUserByIdFromSql(id);
+    public UserDto getUserByIdSql(@PathVariable long id) {
+        return userService.getUserByIdSql(id);
     }
 
 

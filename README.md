@@ -18,8 +18,6 @@ This is a simple Spring Boot user management project that demonstrates the use o
 
 - Exception Handling: Show how to catch the exceptions and customize the response with proper status code.
 
-- JDBC Template: Use raw SQL queries efficiently with JDBC Template.
-
 - Open API (Swagger Documentation): Provide a user-friendly UI for API documentation and testing.
 
 - MySQL Driver: Integrate with MySQL databases for reliable data storage and retrieval.
