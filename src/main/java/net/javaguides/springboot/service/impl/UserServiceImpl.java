@@ -94,4 +94,11 @@ public class UserServiceImpl implements UserService {
         return AutoUserMapper.MAPPER.mapToUserDto(user); // convert to DTO by MapStruct lib
     }
 
+    @Override
+    public UserDto getUserByEmailSql(String email) {
+        User user = userRepository.findByEmailSql(email);
+        return AutoUserMapper.MAPPER.mapToUserDto(user); // convert to DTO by MapStruct lib
+    }
+
+
 }

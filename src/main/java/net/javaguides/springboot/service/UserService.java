@@ -15,4 +15,6 @@ public interface UserService {
     void deleteUser(long id);
 
     UserDto getUserByIdSql(long id);
+
+    UserDto getUserByEmailSql(String email);
 }

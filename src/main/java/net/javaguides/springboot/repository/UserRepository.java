@@ -12,4 +12,8 @@ public interface UserRepository extends JpaRepository<User, Long> {
 
     @Query(value = "SELECT * FROM users WHERE id = :id", nativeQuery = true)
     public User findByIdSql(@Param("id") Long id);
+
+    @Query(value = "SELECT * FROM users WHERE email like CONCAT('%', :email, '%')",
+            nativeQuery = true)
+    public User findByEmailSql(@Param("email") String email);
 }

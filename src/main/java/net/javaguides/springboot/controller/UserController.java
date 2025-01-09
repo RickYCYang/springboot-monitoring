@@ -87,9 +87,14 @@ public class UserController {
         return ResponseEntity.ok("User sucessfully deleted!");
     }
 
-    @GetMapping("user/{id}")
+    @GetMapping("id/{id}")
     public UserDto getUserByIdSql(@PathVariable long id) {
         return userService.getUserByIdSql(id);
+    }
+
+    @GetMapping("email/{email}")
+    public UserDto getUserByEmail(@PathVariable String email) {
+        return userService.getUserByEmailSql(email);
     }
 
 
