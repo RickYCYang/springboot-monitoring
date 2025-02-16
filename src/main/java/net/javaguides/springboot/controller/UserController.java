@@ -16,7 +16,6 @@ import lombok.AllArgsConstructor;
 import net.javaguides.springboot.entity.User;
 import net.javaguides.springboot.exception.ErrorDetails;
 import net.javaguides.springboot.exception.ResourceNotFoundException;
-import net.javaguides.springboot.repository.UserDao;
 import net.javaguides.springboot.service.UserService;
 import net.javaguides.springboot.dto.UserDto;
 

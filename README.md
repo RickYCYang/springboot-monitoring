@@ -22,6 +22,8 @@ This is a simple Spring Boot user management project that demonstrates the use o
 
 - MySQL Driver: Integrate with MySQL databases for reliable data storage and retrieval.
 
+- Docker Support – Enables containerization for easy deployment.
+
 ### Usage
 
 This project serves as an educational and practical example of integrating these libraries into a Spring Boot application. Each library or feature is configured and demonstrated to help developers understand its purpose and application.
