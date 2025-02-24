@@ -1,0 +1,33 @@
+services:
+  mysqldb:
+    image: mysql
+    container_name: mysqldb
+    environment:
+      MYSQL_ROOT_PASSWORD: 1234
+      MYSQL_DATABASE: user_management
+    healthcheck:
+      test: mysqladmin ping -h 127.0.0.1 -u root --password=1234
+      start_period: 5s
+      interval: 5s
+      timeout: 5s
+      retries: 55
+    networks:
+      springboot-mysql-net:
+  
+  springboot-restful-webservices:
+    container_name: springboot-restful-webservices
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "8080:8080"
+    networks:
+      springboot-mysql-net:
+    # restart: on-failure
+    depends_on:
+      mysqldb:
+        condition: service_healthy
+
+networks:
+  springboot-mysql-net:
+
