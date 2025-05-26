@@ -12,22 +12,49 @@ services:
       timeout: 5s
       retries: 55
     networks:
-      springboot-mysql-net:
-  
-  springboot-restful-webservices:
-    container_name: springboot-restful-webservices
+      spring-mysql-net:
+
+  spring_app:
+    container_name: spring_app
     build:
       context: .
       dockerfile: Dockerfile
     ports:
-      - "8080:8080"
+      - '8080:8080'
     networks:
-      springboot-mysql-net:
+      spring-mysql-net:
     # restart: on-failure
     depends_on:
       mysqldb:
         condition: service_healthy
 
-networks:
-  springboot-mysql-net:
+  prometheus:
+    image: prom/prometheus
+    container_name: prometheus
+    volumes:
+      - ./prometheus.yml:/etc/prometheus/prometheus.yml
+    ports:
+      - '9090:9090'
+    networks:
+      spring-mysql-net:
+    depends_on: [mysqldb, spring_app]
 
+  grafana:
+    image: grafana/grafana
+    container_name: grafana
+    ports:
+      - '3000:3000'
+    volumes:
+      - grafana-data:/var/lib/grafana
+    environment:
+      - GF_SECURITY_ADMIN_USER=admin
+      - GF_SECURITY_ADMIN_PASSWORD=admin
+    networks:
+      spring-mysql-net:
+    depends_on: [mysqldb, spring_app, prometheus]
+
+volumes:
+  grafana-data:
+
+networks:
+  spring-mysql-net:

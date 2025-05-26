@@ -30,6 +30,7 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 
+
 @Tag(name = "CRUD REST APIs for User Resource",
         description = "CRUD REST APIs - Create User, Update User, Get User, Get All Users, Delete User")
 @RestController
@@ -39,6 +40,13 @@ public class UserController {
 
     // @Autowired
     private UserService userService;
+
+
+    // http://localhost:8080/api/users/hello
+    @GetMapping("hello")
+    public String hello() {
+        return "Hello, World!";
+    }
 
     // http://localhost:8080/api/users
     @Operation(summary = "Create a new User", description = "Create a new User")
