@@ -1,28 +1,77 @@
-## Spring Boot User Management Web Service
+# Spring Boot User Management Web Service
 
 This is a simple Spring Boot user management project that demonstrates the use of commonly utilized libraries and features in a Spring Boot application.
 
-### Features
+In addition to core backend features, this project also showcases a basic system **monitoring stack** built with **Prometheus**, **Alertmanager**, and **Grafana**, allowing developers to track metrics and receive alerts for issues like high CPU usage or elevated HTTP request rates.
 
-- **Spring Boot REST API** – Build and expose RESTful endpoints.
-- **Spring Data JPA** – Simplify database interactions using JPA and Hibernate.
-- **Spring Boot Validation** – Validate the request body effectively.
-- **Spring Boot Actuator** – Monitor and manage the application.
-- **DTO Mapping** – Utilize ModelMapper and MapStruct for seamless data transfer object (DTO) mapping.
-- **Lombok Utility** – Simplify boilerplate code like getters, setters, and constructors.
-- **Exception Handling** – Show how to catch exceptions and customize responses with proper status codes.
-- **OpenAPI (Swagger Documentation)** – Provide a user-friendly UI for API documentation and testing.
-- **MySQL Driver** – Integrate with MySQL databases for reliable data storage and retrieval.
-- **Docker Support** – Enables containerization for easy deployment.
+The application can be launched via either **Docker Compose** or **Kubernetes**:
 
-### Usage
+- Use `docker-compose.yml` to run locally with Docker (Prometheus and Grafana only, no Alertmanager).
+- Use the YAML files under the `/kubernetes` directory to run in a Kubernetes environment (includes Alertmanager).
 
-This project serves as an educational and practical example of integrating these libraries into a Spring Boot application. Each library or feature is configured and demonstrated to help developers understand its purpose and application.
+---
 
-### Scripts
+## 🚀 Features
 
-#### Package the Spring Boot application into a JAR file
+### 🧩 Spring Boot
 
-```sh
+- **REST API** – Expose RESTful endpoints for user management operations.
+- **Spring Data JPA** – Use Hibernate and JPA for seamless data access.
+- **Validation** – Ensure incoming data integrity with Spring Boot validation.
+- **Spring Boot Actuator** – Gain insights into app health, metrics, and more.
+- **DTO Mapping** – Use ModelMapper or MapStruct to map between DTOs and entities.
+- **Lombok** – Eliminate boilerplate code with annotations like `@Getter`, `@Setter`, etc.
+- **Global Exception Handling** – Return clean, consistent error messages.
+- **OpenAPI / Swagger** – Generate interactive API documentation automatically.
+- **MySQL Integration** – Connect to a MySQL database for persistent storage.
+- **Docker Support** – Package the app as a Docker image for easy deployment.
+
+### 📈 Monitoring & Alerting
+
+- **Prometheus** – Collect and store metrics from the Spring Boot app. Scrapes metrics from `/actuator/prometheus`.
+- **Alertmanager** – Sends email alerts when Prometheus detects defined issues (e.g., high CPU usage, heavy traffic).
+- **Grafana** – Visualize metrics in dashboards; includes panels for CPU usage, HTTP request volume, and more.
+
+---
+
+### Kubernetes YAML Files
+
+| File                           | Description                                                                                                 |
+| ------------------------------ | ----------------------------------------------------------------------------------------------------------- |
+| `namespace.yaml`               | Defines the `monitoring-demo` namespace to scope all resources.                                             |
+| `mysql-deployment.yaml`        | Deploys a MySQL instance with credentials and database name, exposed via a `ClusterIP` service.             |
+| `spring-app.yaml`              | Deploys the Spring Boot application using a local image and exposes it via a `NodePort`.                    |
+| `grafana.yaml`                 | Deploys Grafana with default admin credentials, accessible via `NodePort`.                                  |
+| `prometheus-config.yaml`       | Contains a `ConfigMap` with the main Prometheus config (`prometheus.yml`).                                  |
+| `prometheus-deployment.yaml`   | Deploys Prometheus and exposes it via `NodePort`, mounting the config from the corresponding `ConfigMap`.   |
+| `prometheus-alert-rules.yaml`  | Defines Prometheus alert rules such as high CPU usage and high HTTP request volume.                         |
+| `alertmanager-config.yaml`     | Contains Alertmanager configuration (SMTP settings, receivers, and routes) as a `ConfigMap`.                |
+| `alertmanager-deployment.yaml` | Deploys Alertmanager and exposes it via `NodePort`, mounting the config from the corresponding `ConfigMap`. |
+
+---
+
+## 🔧 Scripts
+
+### Package the Spring Boot app into a JAR
+
+```bash
 ./mvnw clean package -DskipTests=true
 ```
+
+### Accessing Services in Minikube
+
+When using Minikube on macOS with the Docker driver, NodePort services (e.g., Grafana, Prometheus) aren't directly accessible via the Docker network IP like 192.168.49.2.
+
+Instead, you should retrieve the exposed service URLs using the minikube service command:
+
+```bash
+minikube -n <namespace> service <service-name> --url
+```
+
+example
+
+```bash
+minikube -n monitoring-demo service grafana --url
+```
+
+This will return a URL (e.g., http://127.0.0.1:49234) that you can open in your browser locally.

@@ -14,8 +14,8 @@ services:
     networks:
       spring-mysql-net:
 
-  spring_app:
-    container_name: spring_app
+  spring-app:
+    container_name: spring-app
     build:
       context: .
       dockerfile: Dockerfile
@@ -37,7 +37,7 @@ services:
       - '9090:9090'
     networks:
       spring-mysql-net:
-    depends_on: [mysqldb, spring_app]
+    depends_on: [mysqldb, spring-app]
 
   grafana:
     image: grafana/grafana
@@ -51,7 +51,7 @@ services:
       - GF_SECURITY_ADMIN_PASSWORD=admin
     networks:
       spring-mysql-net:
-    depends_on: [mysqldb, spring_app, prometheus]
+    depends_on: [mysqldb, spring-app, prometheus]
 
 volumes:
   grafana-data:

@@ -1,0 +1,32 @@
+# alertmanager-config.yaml
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: alertmanager-config
+  namespace: monitoring-demo
+data:
+  alertmanager.yml: |
+    global:
+      smtp_smarthost: 'sandbox.smtp.mailtrap.io:587'
+      smtp_from: 'alert@yourdomain.com'
+      smtp_auth_username: '064ad328dd7ed3'
+      smtp_auth_password: '7807f9d8f93b4c'
+
+    route:
+      group_by: ['alertname', 'severity']
+      group_wait: 5s
+      group_interval: 10s
+      repeat_interval: 1h
+      receiver: email-alert
+      routes:
+        - match:
+            severity: critical
+          receiver: email-alert
+        - match:
+            severity: warning
+          receiver: email-alert
+
+    receivers:
+      - name: email-alert
+        email_configs:
+          - to: 'rickyang2910@gmail.com'
