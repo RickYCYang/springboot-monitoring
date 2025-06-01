@@ -15,13 +15,13 @@ data:
               severity: warning
             annotations:
               summary: "High CPU usage detected in Spring Boot app"
-              description: "CPU usage is above 80% for more than 30 seconds"
+              description: "CPU usage is above 80% for more than 30 seconds on {{ $labels.instance }}"
 
           - alert: HttpRequestVolumeHigh
-            expr: sum(increase(http_server_requests_seconds_count{job="spring-boot"}[1m])) > 20
+            expr: increase(http_server_requests_seconds_count{job="spring-boot"}[1m]) > 20
             for: 1m
             labels:
               severity: critical
             annotations:
               summary: "High HTTP request volume in Spring Boot"
-              description: "More than 20 HTTP requests received in the last minute"
+              description: "More than 20 HTTP requests received in the last minute on {{ $labels.instance }}"

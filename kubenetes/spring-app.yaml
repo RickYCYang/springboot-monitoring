@@ -4,7 +4,7 @@ metadata:
   name: spring-app
   namespace: monitoring-demo
 spec:
-  replicas: 1
+  replicas: 2
   selector:
     matchLabels:
       app: spring-app
@@ -12,6 +12,10 @@ spec:
     metadata:
       labels:
         app: spring-app
+      annotations:
+        prometheus.io/scrape: "true"
+        prometheus.io/path: "/actuator/prometheus"
+        prometheus.io/port: "8080"
     spec:
       containers:
         - name: spring-app
