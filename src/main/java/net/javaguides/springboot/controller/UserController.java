@@ -1,6 +1,8 @@
 package net.javaguides.springboot.controller;
 
 import java.time.LocalDateTime;
+import java.util.logging.Logger;
+import java.util.logging.Level;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -30,7 +32,6 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 
-
 @Tag(name = "CRUD REST APIs for User Resource",
         description = "CRUD REST APIs - Create User, Update User, Get User, Get All Users, Delete User")
 @RestController
@@ -40,11 +41,14 @@ public class UserController {
 
     // @Autowired
     private UserService userService;
+    private static final Logger logger = Logger.getLogger(UserController.class.getName());
+
 
 
     // http://localhost:8080/api/users/hello
     @GetMapping("hello")
     public String hello() {
+        logger.info("Hello, World!");
         return "Hello, World!";
     }
 
@@ -72,6 +76,7 @@ public class UserController {
     @GetMapping
     public ResponseEntity<List<UserDto>> getAllUsers() {
         List<UserDto> users = userService.getAllUSers();
+        logger.info("Get all users");
         return ResponseEntity.ok(users);
     }
 
