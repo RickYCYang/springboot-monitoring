@@ -19,25 +19,45 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
+    image: spring-app:with-apm
     ports:
       - '8080:8080'
+    environment:
+      - JAVA_OPTS=-javaagent:/agent/elastic-apm-agent.jar
+    volumes:
+      - ./apm-agent:/agent
     networks:
       spring-mysql-net:
-    # restart: on-failure
     depends_on:
       mysqldb:
         condition: service_healthy
+      apm-server:
+        condition: service_started
 
   prometheus:
     image: prom/prometheus
     container_name: prometheus
     volumes:
-      - ./prometheus.yml:/etc/prometheus/prometheus.yml
+      - ./config/prometheus.yml:/etc/prometheus/prometheus.yml
+      - ./config/spring-alert-rules.yaml:/etc/prometheus/rules/spring-alert-rules.yaml
     ports:
       - '9090:9090'
     networks:
       spring-mysql-net:
-    depends_on: [mysqldb, spring-app]
+    depends_on:
+      - mysqldb
+      - spring-app
+      - alertmanager
+
+  alertmanager:
+    image: prom/alertmanager
+    container_name: alertmanager
+    volumes:
+      - ./config/alertmanager.yml:/etc/alertmanager/alertmanager.yml
+    ports:
+      - '9093:9093'
+    networks:
+      spring-mysql-net:
 
   grafana:
     image: grafana/grafana
@@ -51,7 +71,64 @@ services:
       - GF_SECURITY_ADMIN_PASSWORD=admin
     networks:
       spring-mysql-net:
-    depends_on: [mysqldb, spring-app, prometheus]
+    depends_on:
+      - mysqldb
+      - spring-app
+      - prometheus
+
+  apm-server:
+    image: docker.elastic.co/apm/apm-server:7.17.18
+    container_name: apm-server
+    command:
+      - '-e'
+      - '-E'
+      - 'apm-server.host=0.0.0.0:8200'
+      - '-E'
+      - 'output.elasticsearch.hosts=["http://elasticsearch:9200"]'
+    ports:
+      - '8200:8200'
+    networks:
+      spring-mysql-net:
+    depends_on:
+      - elasticsearch
+
+  elasticsearch:
+    image: docker.elastic.co/elasticsearch/elasticsearch:7.17.18
+    container_name: elasticsearch
+    environment:
+      - discovery.type=single-node
+      - ES_JAVA_OPTS=-Xms512m -Xmx512m
+    ports:
+      - '9200:9200'
+    networks:
+      spring-mysql-net:
+
+  kibana:
+    image: docker.elastic.co/kibana/kibana:7.17.18
+    container_name: kibana
+    ports:
+      - '5601:5601'
+    environment:
+      - ELASTICSEARCH_HOSTS=http://elasticsearch:9200
+    networks:
+      spring-mysql-net:
+    depends_on:
+      - elasticsearch
+
+  filebeat:
+    image: docker.elastic.co/beats/filebeat:7.17.18
+    container_name: filebeat
+    user: root
+    command: ['--strict.perms=false']
+    volumes:
+      - ./config/filebeat.yml:/usr/share/filebeat/filebeat.yml:ro
+      - /var/lib/docker/containers:/var/lib/docker/containers:ro
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+    networks:
+      spring-mysql-net:
+    depends_on:
+      - elasticsearch
+      - spring-app
 
 volumes:
   grafana-data:

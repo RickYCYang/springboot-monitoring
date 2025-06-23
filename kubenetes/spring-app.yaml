@@ -1,3 +1,4 @@
+# spring-app.yaml
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -19,7 +20,7 @@ spec:
     spec:
       containers:
         - name: spring-app
-          image: spring-app:latest          # <- Local image name
+          image: spring-app:with-apm          # <- Local image name
           imagePullPolicy: Never            # <- Prevent Kubernetes from trying to pull from Docker Hub
           ports:
             - containerPort: 8080

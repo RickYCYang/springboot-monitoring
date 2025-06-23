@@ -58,6 +58,20 @@ The application can be launched via either **Docker Compose** or **Kubernetes**:
 ./mvnw clean package -DskipTests=true
 ```
 
+### Start / Stop the Minikube cluster
+
+Start the Minikube cluster
+
+```bash
+minikube start
+```
+
+Stop the Minikube cluster
+
+```bash
+minikube start
+```
+
 ### Accessing Services in Minikube
 
 When using Minikube on macOS with the Docker driver, NodePort services (e.g., Grafana, Prometheus) aren't directly accessible via the Docker network IP like 192.168.49.2.
@@ -75,3 +89,25 @@ minikube -n monitoring-demo service grafana --url
 ```
 
 This will return a URL (e.g., http://127.0.0.1:49234) that you can open in your browser locally.
+
+### Build Docker Image Inside Minikube
+
+If you prefer not to push your image to Docker Hub and just want to build and use it locally, you can build the image directly inside the Minikube cluster.
+
+First, switch your terminal to use Minikube’s Docker daemon:
+
+```bash
+eval $(minikube docker-env)
+```
+
+To confirm that the Docker environment is correctly set to Minikube, run:
+
+```bash
+docker info | grep 'Name'
+```
+
+You should see the following output (or similar):
+
+```bash
+Name: minikube
+```
