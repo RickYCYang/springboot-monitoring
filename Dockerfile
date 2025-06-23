@@ -6,12 +6,12 @@ WORKDIR /app
 COPY target/springboot-webservices-0.0.1-SNAPSHOT.jar app.jar
 
 # copy Elastic APM agent jar
-COPY target/apm/elastic-apm-agent-1.47.0.jar elastic-apm-agent.jar
+COPY target/apm/elastic-apm-agent-1.54.0.jar elastic-apm-agent.jar
 
 EXPOSE 8080
 
 ENV SPRING_PROFILES_ACTIVE=docker \
-  ELASTIC_APM_SERVICE_NAME=my-spring-app \
+  ELASTIC_APM_SERVICE_NAME=spring-app \
   ELASTIC_APM_SERVER_URL=http://apm-server:8200 \
   ELASTIC_APM_ENVIRONMENT=production
 
