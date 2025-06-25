@@ -1,6 +1,6 @@
 # send http request to springboot application for testing the metrics
-# hostname=http://127.0.0.1:56264
-hostname=http://localhost:8080
+# hostname=http://127.0.0.1:49930
+hostname=http://localhost:8082
 echo "Start sending HTTP requests to $hostname"
 echo "-------------------------"
 for i in {1..20}

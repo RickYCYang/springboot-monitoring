@@ -1,96 +1,30 @@
 services:
   mysqldb:
-    image: mysql
+    image: mysql:latest
     container_name: mysqldb
     environment:
       MYSQL_ROOT_PASSWORD: 1234
       MYSQL_DATABASE: user_management
     healthcheck:
-      test: mysqladmin ping -h 127.0.0.1 -u root --password=1234
+      test:
+        [
+          'CMD',
+          'mysqladmin',
+          'ping',
+          '-h',
+          'localhost',
+          '-u',
+          'root',
+          '--password=1234',
+        ]
       start_period: 5s
       interval: 5s
       timeout: 5s
-      retries: 55
-    networks:
-      spring-mysql-net:
-
-  spring-app:
-    container_name: spring-app
-    build:
-      context: .
-      dockerfile: Dockerfile
-    image: spring-app:with-apm
-    ports:
-      - '8080:8080'
-    environment:
-      - JAVA_OPTS=-javaagent:/agent/elastic-apm-agent.jar
+      retries: 5
     volumes:
-      - ./apm-agent:/agent
+      - mysqldata:/var/lib/mysql
     networks:
-      spring-mysql-net:
-    depends_on:
-      mysqldb:
-        condition: service_healthy
-      apm-server:
-        condition: service_started
-
-  prometheus:
-    image: prom/prometheus
-    container_name: prometheus
-    volumes:
-      - ./config/prometheus.yml:/etc/prometheus/prometheus.yml
-      - ./config/spring-alert-rules.yaml:/etc/prometheus/rules/spring-alert-rules.yaml
-    ports:
-      - '9090:9090'
-    networks:
-      spring-mysql-net:
-    depends_on:
-      - mysqldb
-      - spring-app
-      - alertmanager
-
-  alertmanager:
-    image: prom/alertmanager
-    container_name: alertmanager
-    volumes:
-      - ./config/alertmanager.yml:/etc/alertmanager/alertmanager.yml
-    ports:
-      - '9093:9093'
-    networks:
-      spring-mysql-net:
-
-  grafana:
-    image: grafana/grafana
-    container_name: grafana
-    ports:
-      - '3000:3000'
-    volumes:
-      - grafana-data:/var/lib/grafana
-    environment:
-      - GF_SECURITY_ADMIN_USER=admin
-      - GF_SECURITY_ADMIN_PASSWORD=admin
-    networks:
-      spring-mysql-net:
-    depends_on:
-      - mysqldb
-      - spring-app
-      - prometheus
-
-  apm-server:
-    image: docker.elastic.co/apm/apm-server:7.17.18
-    container_name: apm-server
-    command:
-      - '-e'
-      - '-E'
-      - 'apm-server.host=0.0.0.0:8200'
-      - '-E'
-      - 'output.elasticsearch.hosts=["http://elasticsearch:9200"]'
-    ports:
-      - '8200:8200'
-    networks:
-      spring-mysql-net:
-    depends_on:
-      - elasticsearch
+      - monitoring-net
 
   elasticsearch:
     image: docker.elastic.co/elasticsearch/elasticsearch:7.17.18
@@ -101,17 +35,140 @@ services:
     ports:
       - '9200:9200'
     networks:
-      spring-mysql-net:
+      - monitoring-net
+
+  apm-server:
+    image: docker.elastic.co/apm/apm-server:7.17.18
+    container_name: apm-server
+    command:
+      - -e
+      - -E
+      - apm-server.host=0.0.0.0:8200
+      - -E
+      - output.elasticsearch.hosts=["http://elasticsearch:9200"]
+    ports:
+      - '8200:8200'
+    networks:
+      - monitoring-net
+    depends_on:
+      - elasticsearch
+
+  spring-app-elastic:
+    build:
+      context: .
+      dockerfile: Dockerfile.elastic # 建議拆一個 Dockerfile.elacic
+    image: spring-app:elastic
+    container_name: spring-app-elastic
+    ports:
+      - '8081:8080' # 若與 skywalking app 共用端口，避免衝突
+    environment:
+      - ELASTIC_APM_SERVICE_NAME=spring-app-elastic
+      - ELASTIC_APM_SERVER_URL=http://apm-server:8200
+      - ELASTIC_APM_ENVIRONMENT=production
+      - SPRING_PROFILES_ACTIVE=docker
+    volumes:
+      - ./elastic-apm-agent:/app/elastic-apm-agent
+    networks:
+      - monitoring-net
+    depends_on:
+      - apm-server
+
+  spring-app-skywalking:
+    build:
+      context: .
+      dockerfile: Dockerfile.skywalking # 建議另建 Dockerfile
+    image: spring-app:skywalking
+    container_name: spring-app-skywalking
+    ports:
+      - '8082:8080'
+    environment:
+      - JAVA_OPTS=-javaagent:/app/skywalking-agent/skywalking-agent.jar -Dskywalking.agent.service_name=spring-app-skywalking -Dskywalking.collector.backend_service=skywalking-oap:11800
+      - SPRING_PROFILES_ACTIVE=docker
+    volumes:
+      - ./skywalking-agent:/app/skywalking-agent
+    networks:
+      - monitoring-net
+    depends_on:
+      - skywalking-oap
+
+  skywalking-ui:
+    image: apache/skywalking-ui:9.1.0
+    container_name: skywalking-ui
+    restart: always
+    ports:
+      - '8080:8080'
+    environment:
+      - SW_OAP_ADDRESS=http://skywalking-oap:12800
+    depends_on:
+      - elasticsearch
+      - skywalking-oap
+    networks:
+      - monitoring-net
+
+  skywalking-oap:
+    image: apache/skywalking-oap-server:9.1.0
+    container_name: skywalking-oap
+    environment:
+      - SW_STORAGE=elasticsearch
+      - SW_STORAGE_ES_CLUSTER_NODES=elasticsearch:9200
+    restart: always
+    ports:
+      - '12800:12800'
+      - '11800:11800'
+    networks:
+      - monitoring-net
+    depends_on:
+      - elasticsearch
+
+  prometheus:
+    image: prom/prometheus
+    container_name: prometheus
+    volumes:
+      - ./config/prometheus.yml:/etc/prometheus/prometheus.yml:ro
+      - ./config/spring-alert-rules.yaml:/etc/prometheus/rules/spring-alert-rules.yaml:ro
+    ports:
+      - '9090:9090'
+    networks:
+      - monitoring-net
+    depends_on:
+      - spring-app-elastic
+      - spring-app-skywalking
+      - alertmanager
+
+  alertmanager:
+    image: prom/alertmanager
+    container_name: alertmanager
+    volumes:
+      - ./config/alertmanager.yml:/etc/alertmanager/alertmanager.yml:ro
+    ports:
+      - '9093:9093'
+    networks:
+      - monitoring-net
+
+  grafana:
+    image: grafana/grafana
+    container_name: grafana
+    environment:
+      - GF_SECURITY_ADMIN_USER=admin
+      - GF_SECURITY_ADMIN_PASSWORD=admin
+    ports:
+      - '3000:3000'
+    volumes:
+      - grafana-data:/var/lib/grafana
+    networks:
+      - monitoring-net
+    depends_on:
+      - prometheus
 
   kibana:
     image: docker.elastic.co/kibana/kibana:7.17.18
     container_name: kibana
-    ports:
-      - '5601:5601'
     environment:
       - ELASTICSEARCH_HOSTS=http://elasticsearch:9200
+    ports:
+      - '5601:5601'
     networks:
-      spring-mysql-net:
+      - monitoring-net
     depends_on:
       - elasticsearch
 
@@ -119,19 +176,23 @@ services:
     image: docker.elastic.co/beats/filebeat:7.17.18
     container_name: filebeat
     user: root
-    command: ['--strict.perms=false']
+    command:
+      ['--strict.perms=false', '-e', '-c', '/usr/share/filebeat/filebeat.yml']
     volumes:
       - ./config/filebeat.yml:/usr/share/filebeat/filebeat.yml:ro
       - /var/lib/docker/containers:/var/lib/docker/containers:ro
       - /var/run/docker.sock:/var/run/docker.sock:ro
     networks:
-      spring-mysql-net:
+      - monitoring-net
     depends_on:
       - elasticsearch
-      - spring-app
+      - spring-app-elastic
+      - spring-app-skywalking
 
 volumes:
+  mysqldata:
   grafana-data:
 
 networks:
-  spring-mysql-net:
+  monitoring-net:
+    driver: bridge

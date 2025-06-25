@@ -1,0 +1,46 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: spring-app-skywalking
+  namespace: monitoring
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: spring-app-skywalking
+  template:
+    metadata:
+      labels:
+        app: spring-app-skywalking
+      annotations:
+        prometheus.io/scrape: "true"
+        prometheus.io/path: "/actuator/prometheus"
+        prometheus.io/port: "8080"
+    spec:
+      containers:
+        - name: spring-app
+          image: spring-app:skywalking
+          imagePullPolicy: Never
+          ports:
+            - containerPort: 8080
+          env:
+            - name: JAVA_OPTS
+              value: >-
+                -javaagent:/app/skywalking-agent/skywalking-agent.jar
+                -Dskywalking.agent.service_name=spring-app-skywalking
+                -Dskywalking.collector.backend_service=skywalking-oap.monitoring:11800
+            - name: SPRING_PROFILES_ACTIVE
+              value: docker
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: spring-app-skywalking
+  namespace: monitoring
+spec:
+  type: NodePort
+  selector:
+    app: spring-app-skywalking
+  ports:
+    - port: 8080
+      nodePort: 30050

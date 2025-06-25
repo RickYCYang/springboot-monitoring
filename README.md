@@ -38,7 +38,7 @@ The application can be launched via either **Docker Compose** or **Kubernetes**:
 
 | File                           | Description                                                                                                 |
 | ------------------------------ | ----------------------------------------------------------------------------------------------------------- |
-| `namespace.yaml`               | Defines the `monitoring-demo` namespace to scope all resources.                                             |
+| `namespace.yaml`               | Defines the `monitoring` namespace to scope all resources.                                                  |
 | `mysql-deployment.yaml`        | Deploys a MySQL instance with credentials and database name, exposed via a `ClusterIP` service.             |
 | `spring-app.yaml`              | Deploys the Spring Boot application using a local image and exposes it via a `NodePort`.                    |
 | `grafana.yaml`                 | Deploys Grafana with default admin credentials, accessible via `NodePort`.                                  |
@@ -63,7 +63,7 @@ The application can be launched via either **Docker Compose** or **Kubernetes**:
 Start the Minikube cluster
 
 ```bash
-minikube start
+minikube start --memory=8192 --cpus=4
 ```
 
 Stop the Minikube cluster
@@ -85,7 +85,7 @@ minikube -n <namespace> service <service-name> --url
 example
 
 ```bash
-minikube -n monitoring-demo service grafana --url
+minikube -n monitoring service grafana --url
 ```
 
 This will return a URL (e.g., http://127.0.0.1:49234) that you can open in your browser locally.
@@ -110,4 +110,18 @@ You should see the following output (or similar):
 
 ```bash
 Name: minikube
+```
+
+### Statup all the services using Docker Compose
+
+This command builds the images (if necessary) and starts all the defined services.
+
+```bash
+docker compose up --build -d
+```
+
+To stop and remove all services:
+
+```bash
+docker compose down
 ```

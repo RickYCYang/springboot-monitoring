@@ -103,6 +103,16 @@
 			<artifactId>apm-agent-api</artifactId>
 			<version>1.54.0</version>
 		</dependency>
+		<dependency>
+			<groupId>org.apache.skywalking</groupId>
+			<artifactId>apm-toolkit-trace</artifactId>
+			<version>9.1.0</version>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.skywalking</groupId>
+			<artifactId>apm-toolkit-trace</artifactId>
+			<version>9.4.0</version>
+		</dependency>
 	</dependencies>
 
 	<build>
@@ -162,6 +172,7 @@
 				<artifactId>maven-dependency-plugin</artifactId>
 				<version>3.6.0</version>
 				<executions>
+					<!-- Elastic APM Agent -->
 					<execution>
 						<id>get-apm-agent</id>
 						<phase>package</phase>

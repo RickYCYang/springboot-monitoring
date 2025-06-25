@@ -1,0 +1,16 @@
+FROM eclipse-temurin:21
+WORKDIR /app
+
+# copy Spring Boot app jar
+COPY target/springboot-webservices-0.0.1-SNAPSHOT.jar app.jar
+
+# copy Elastic APM agent jar
+COPY elastic-apm-agent/ /app/elastic-apm-agent/
+
+EXPOSE 8080
+
+ENV ELASTIC_APM_SERVICE_NAME=spring-app-elastic \
+  ELASTIC_APM_SERVER_URL=http://apm-server:8200 \
+  ELASTIC_APM_ENVIRONMENT=production \
+  SPRING_PROFILES_ACTIVE=docker
+ENTRYPOINT ["java", "-javaagent:/app/elastic-apm-agent/elastic-apm-agent-1.54.0.jar", "-jar", "app.jar"]

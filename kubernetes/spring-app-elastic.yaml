@@ -1,0 +1,47 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: spring-app-elastic
+  namespace: monitoring
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: spring-app-elastic
+  template:
+    metadata:
+      labels:
+        app: spring-app-elastic
+      annotations:
+        prometheus.io/scrape: "true"
+        prometheus.io/path: "/actuator/prometheus"
+        prometheus.io/port: "8080"
+    spec:
+      containers:
+        - name: spring-app
+          image: spring-app:elastic
+          imagePullPolicy: Never
+          ports:
+            - containerPort: 8080
+          env:
+            - name: ELASTIC_APM_SERVICE_NAME
+              value: spring-app-elastic
+            - name: ELASTIC_APM_SERVER_URL
+              value: http://apm-server:8200
+            - name: ELASTIC_APM_ENVIRONMENT
+              value: production
+            - name: SPRING_PROFILES_ACTIVE
+              value: docker
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: spring-app-elastic
+  namespace: monitoring
+spec:
+  type: NodePort
+  selector:
+    app: spring-app-elastic
+  ports:
+    - port: 8080
+      nodePort: 30051
