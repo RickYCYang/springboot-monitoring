@@ -46,7 +46,7 @@ metadata:
 data:
   prometheus.yml: |
     global:
-      scrape_interval: 5s
+      scrape_interval: 30s
     
     alerting:
       alertmanagers:

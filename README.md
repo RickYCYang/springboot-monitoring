@@ -69,7 +69,7 @@ minikube start
 Stop the Minikube cluster
 
 ```bash
-minikube start
+minikube stop
 ```
 
 ### Accessing Services in Minikube
