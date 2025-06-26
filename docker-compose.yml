@@ -56,11 +56,11 @@ services:
   spring-app-elastic:
     build:
       context: .
-      dockerfile: Dockerfile.elastic # 建議拆一個 Dockerfile.elacic
+      dockerfile: Dockerfile.elastic
     image: spring-app:elastic
     container_name: spring-app-elastic
     ports:
-      - '8081:8080' # 若與 skywalking app 共用端口，避免衝突
+      - '8081:8080'
     environment:
       - ELASTIC_APM_SERVICE_NAME=spring-app-elastic
       - ELASTIC_APM_SERVER_URL=http://apm-server:8200
@@ -76,7 +76,7 @@ services:
   spring-app-skywalking:
     build:
       context: .
-      dockerfile: Dockerfile.skywalking # 建議另建 Dockerfile
+      dockerfile: Dockerfile.skywalking
     image: spring-app:skywalking
     container_name: spring-app-skywalking
     ports:
@@ -84,8 +84,6 @@ services:
     environment:
       - JAVA_OPTS=-javaagent:/app/skywalking-agent/skywalking-agent.jar -Dskywalking.agent.service_name=spring-app-skywalking -Dskywalking.collector.backend_service=skywalking-oap:11800
       - SPRING_PROFILES_ACTIVE=docker
-    volumes:
-      - ./skywalking-agent:/app/skywalking-agent
     networks:
       - monitoring-net
     depends_on:
