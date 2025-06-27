@@ -28,25 +28,34 @@ The application can be launched via either **Docker Compose** or **Kubernetes**:
 
 ### 📈 Monitoring & Alerting
 
-- **Prometheus** – Collect and store metrics from the Spring Boot app. Scrapes metrics from `/actuator/prometheus`.
+- **Prometheus** – Collects and stores metrics from the Spring Boot app. It scrapes data from `/actuator/prometheus`.
 - **Alertmanager** – Sends email alerts when Prometheus detects defined issues (e.g., high CPU usage, heavy traffic).
-- **Grafana** – Visualize metrics in dashboards; includes panels for CPU usage, HTTP request volume, and more.
+- **Grafana** – Visualizes metrics in dashboards; includes panels for CPU usage, HTTP request volume, and more.
+- **ELK Stack (Elasticsearch, Logstash, Kibana)** – Collects and visualizes logs from the Spring Boot app.
+  - **Elasticsearch** stores log data.
+  - **Logstash** processes and transforms logs.
+  - **Kibana** provides dashboards to search and analyze log data interactively.
+- **Elastic APM** – Provides performance tracing and transaction details for the Spring Boot application. Captures end-to-end latency, errors, and spans between services, visualized in the Kibana APM dashboard.
+- **SkyWalking APM** – An alternative APM solution that offers distributed tracing, metrics collection, service topology, and performance analysis for the Spring Boot app. It provides its own UI for visualizing service dependencies and tracing data.
 
 ---
 
 ### Kubernetes YAML Files
 
-| File                           | Description                                                                                                 |
-| ------------------------------ | ----------------------------------------------------------------------------------------------------------- |
-| `namespace.yaml`               | Defines the `monitoring` namespace to scope all resources.                                                  |
-| `mysql-deployment.yaml`        | Deploys a MySQL instance with credentials and database name, exposed via a `ClusterIP` service.             |
-| `spring-app.yaml`              | Deploys the Spring Boot application using a local image and exposes it via a `NodePort`.                    |
-| `grafana.yaml`                 | Deploys Grafana with default admin credentials, accessible via `NodePort`.                                  |
-| `prometheus-config.yaml`       | Contains a `ConfigMap` with the main Prometheus config (`prometheus.yml`).                                  |
-| `prometheus-deployment.yaml`   | Deploys Prometheus and exposes it via `NodePort`, mounting the config from the corresponding `ConfigMap`.   |
-| `prometheus-alert-rules.yaml`  | Defines Prometheus alert rules such as high CPU usage and high HTTP request volume.                         |
-| `alertmanager-config.yaml`     | Contains Alertmanager configuration (SMTP settings, receivers, and routes) as a `ConfigMap`.                |
-| `alertmanager-deployment.yaml` | Deploys Alertmanager and exposes it via `NodePort`, mounting the config from the corresponding `ConfigMap`. |
+| File                         | Description                                                                    |
+| ---------------------------- | ------------------------------------------------------------------------------ |
+| `namespace.yaml`             | Creates a dedicated `monitoring` namespace.                                    |
+| `prometheus.yaml`            | Deploys Prometheus, its alert rules, and RBAC setup.                           |
+| `alertmanager.yaml`          | Deploys Alertmanager with email alerting.                                      |
+| `grafana.yaml`               | Deploys Grafana for visualization.                                             |
+| `elasticsearch.yaml`         | Deploys Elasticsearch for storing logs/APM traces.                             |
+| `filebeat.yaml`              | Deploys Filebeat to collect Kubernetes logs and forward them to Elasticsearch. |
+| `kibana.yaml`                | Deploys Kibana to visualize logs from Elasticsearch.                           |
+| `apmserver.yaml`             | Deploys Elastic APM Server to collect APM data.                                |
+| `skywalking.yaml`            | Deploys Apache SkyWalking (OAP server).                                        |
+| `mysql.yaml`                 | Deploys MySQL database (sample app database).                                  |
+| `spring-app-elastic.yaml`    | Deploys a Spring Boot app integrated with Elastic APM.                         |
+| `spring-app-skywalking.yaml` | Deploys a Spring Boot app integrated with SkyWalking agent.                    |
 
 ---
 
