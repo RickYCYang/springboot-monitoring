@@ -1,8 +1,8 @@
 package net.javaguides.springboot.controller;
 
 import java.time.LocalDateTime;
-import java.util.logging.Logger;
-import java.util.logging.Level;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -42,7 +42,7 @@ public class UserController {
 
     // @Autowired
     private UserService userService;
-    private static final Logger logger = Logger.getLogger(UserController.class.getName());
+    private static final Logger logger = LoggerFactory.getLogger(UserController.class);
 
 
 

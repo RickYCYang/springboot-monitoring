@@ -50,9 +50,16 @@ data:
       - add_cloud_metadata: ~
       - add_kubernetes_metadata:
           in_cluster: true
+    
+    setup.template.name: "namespace-template"
+    setup.template.pattern: "*"
+    setup.template.enabled: true
 
     output.elasticsearch:
       hosts: ['http://elasticsearch:9200']
+      index: "%{[kubernetes.namespace]:unknown}-%{+yyyy.MM.dd}"
+    
+    setup.ilm.enabled: false
 
 ---
 apiVersion: apps/v1
