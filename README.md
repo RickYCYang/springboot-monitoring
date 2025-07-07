@@ -134,3 +134,23 @@ To stop and remove all services:
 ```bash
 docker compose down
 ```
+
+### Run Unit Test
+
+Run all tests
+
+```bash
+./mvnw test
+```
+
+Run tests in a specific class:
+
+```bash
+./mvnw -Dtest=UserServiceImplTest test
+```
+
+Run a specific test method:
+
+```bash
+./mvnw -Dtest=UserServiceImplTest#createUser_shouldReturnUserDto_whenEmailNotExists test
+```

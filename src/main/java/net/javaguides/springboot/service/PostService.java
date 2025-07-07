@@ -5,4 +5,6 @@ import net.javaguides.springboot.entity.Post;
 
 public interface PostService {
     List<Post> fetchAllPosts();
+
+    List<Post> getAllPostsFromSelf();
 }
