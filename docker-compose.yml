@@ -21,6 +21,8 @@ services:
       interval: 5s
       timeout: 5s
       retries: 5
+    ports:
+      - '3306:3306'
     volumes:
       - mysqldata:/var/lib/mysql
     networks:
@@ -83,6 +85,22 @@ services:
       - '8082:8080'
     environment:
       - JAVA_OPTS=-javaagent:/app/skywalking-agent/skywalking-agent.jar -Dskywalking.agent.service_name=spring-app-skywalking -Dskywalking.collector.backend_service=skywalking-oap:11800
+      - SPRING_PROFILES_ACTIVE=docker
+    networks:
+      - monitoring-net
+    depends_on:
+      - skywalking-oap
+
+  spring-app-skywalking-provider:
+    build:
+      context: .
+      dockerfile: Dockerfile.skywalking
+    image: spring-app:skywalking
+    container_name: spring-app-skywalking-provider
+    ports:
+      - '8083:8080'
+    environment:
+      - JAVA_OPTS=-javaagent:/app/skywalking-agent/skywalking-agent.jar -Dskywalking.agent.service_name=spring-app-skywalking-provider -Dskywalking.collector.backend_service=skywalking-oap:11800
       - SPRING_PROFILES_ACTIVE=docker
     networks:
       - monitoring-net

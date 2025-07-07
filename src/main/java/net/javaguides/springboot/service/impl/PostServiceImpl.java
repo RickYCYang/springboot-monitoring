@@ -18,4 +18,10 @@ public class PostServiceImpl implements PostService {
         return Arrays.asList(posts);
     }
 
+    @Override
+    public List<Post> getAllPostsFromSelf() {
+        String url = "http://spring-app-skywalking-provider:8080/api/posts";
+        Post[] posts = restTemplate.getForObject(url, Post[].class);
+        return Arrays.asList(posts);
+    }
 }
