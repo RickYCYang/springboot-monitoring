@@ -37,6 +37,7 @@ The application can be launched via either **Docker Compose** or **Kubernetes**:
   - **Kibana** provides dashboards to search and analyze log data interactively.
 - **Elastic APM** – Provides performance tracing and transaction details for the Spring Boot application. Captures end-to-end latency, errors, and spans between services, visualized in the Kibana APM dashboard.
 - **SkyWalking APM** – An alternative APM solution that offers distributed tracing, metrics collection, service topology, and performance analysis for the Spring Boot app. It provides its own UI for visualizing service dependencies and tracing data.
+- **Istio (optional)** – A service mesh that allows fine-grained traffic and access control. Enables IP-based access control and observability enhancements.
 
 ---
 
@@ -56,6 +57,7 @@ The application can be launched via either **Docker Compose** or **Kubernetes**:
 | `mysql.yaml`                 | Deploys MySQL database (sample app database).                                  |
 | `spring-app-elastic.yaml`    | Deploys a Spring Boot app integrated with Elastic APM.                         |
 | `spring-app-skywalking.yaml` | Deploys a Spring Boot app integrated with SkyWalking agent.                    |
+| `ip-policy.yaml`             | (Optional) Applies IP-based access control using Istio AuthorizationPolicy.    |
 
 ---
 
@@ -153,4 +155,41 @@ Run a specific test method:
 
 ```bash
 ./mvnw -Dtest=UserServiceImplTest#createUser_shouldReturnUserDto_whenEmailNotExists test
+```
+
+## 🛡️ Optional: Istio Setup & IP-Based Access Control
+
+If you want to control access to the Spring Boot /actuator/prometheus endpoint based on client IP, you can install Istio and apply an AuthorizationPolicy.
+
+🔧 Installing Istio with Homebrew
+
+```bash
+brew install istioctl
+istioctl install --set profile=demo -y
+```
+
+✅ Enable Sidecar Injection for Monitoring Namespace
+
+```bash
+kubectl label namespace monitoring istio-injection=enabled
+```
+
+🔀 Redeploy Spring Boot App (for sidecar to take effect)
+
+```bash
+kubectl rollout restart deployment <deployment-name> -n monitoring
+```
+
+🔒 Apply IP-Based DENY Policy
+
+This policy denies requests to /actuator/prometheus from any IP in the 10.0.0.0/8 range (i.e., any IP starting with 10.).
+
+```bash
+kubectl apply -f ip-policy.yaml
+```
+
+ℹ️ You can use the following command to check if requests are being blocked and verify the client IP address:
+
+```bash
+kubectl logs <pod-name> -c istio-proxy -n monitoring
 ```

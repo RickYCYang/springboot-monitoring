@@ -1,0 +1,15 @@
+# ip-policy.yaml
+apiVersion: security.istio.io/v1beta1
+kind: AuthorizationPolicy
+metadata:
+  name: block-10-range
+  namespace: monitoring
+spec:
+  action: DENY
+  rules:
+  - from:
+    - source:
+        ipBlocks: ["10.0.0.0/8"]
+    to:
+    - operation:
+        paths: ["/actuator/prometheus"]
