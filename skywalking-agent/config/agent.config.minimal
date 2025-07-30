@@ -1,0 +1,263 @@
+# Licensed to the Apache Software Foundation (ASF) under one
+# or more contributor license agreements.  See the NOTICE file
+# distributed with this work for additional information
+# regarding copyright ownership.  The ASF licenses this file
+# to you under the Apache License, Version 2.0 (the
+# "License"); you may not use this file except in compliance
+# with the License.  You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+# The service name in UI
+agent.service_name=${SW_AGENT_NAME:Your_ApplicationName}
+agent.service_name#length=${SW_AGENT_NAME_MAX_LENGTH:50}
+
+# The agent namespace
+agent.namespace=${SW_AGENT_NAMESPACE:}
+
+# The agent cluster
+agent.cluster=${SW_AGENT_CLUSTER:}
+
+# The number of sampled traces per 3 seconds
+# Set to -1 to disable sampling (collect all traces for complete tracing)
+agent.sample_n_per_3_secs=${SW_AGENT_SAMPLE:-1}
+
+# Authentication active is based on backend setting
+agent.authentication=${SW_AGENT_AUTHENTICATION:}
+
+# The max number of TraceSegmentRef in a single span to keep memory cost estimatable
+agent.trace_segment_ref_limit_per_span=${SW_TRACE_SEGMENT_LIMIT:500}
+
+# The max amount of spans in a single segment
+agent.span_limit_per_segment=${SW_AGENT_SPAN_LIMIT:300}
+
+# Ignore static resources to reduce noise
+agent.ignore_suffix=${SW_AGENT_IGNORE_SUFFIX:.jpg,.jpeg,.js,.css,.png,.bmp,.gif,.ico,.mp3,.mp4,.html,.svg}
+
+# Disable debugging class saving
+agent.is_open_debugging_class=${SW_AGENT_OPEN_DEBUG:false}
+
+# Instance name configuration
+agent.instance_name=${SW_AGENT_INSTANCE_NAME:}
+agent.instance_name#length=${SW_AGENT_INSTANCE_NAME_MAX_LENGTH:50}
+
+# Service instance properties
+agent.instance_properties_json=${SW_INSTANCE_PROPERTIES_JSON:}
+
+# Exception depth
+agent.cause_exception_depth=${SW_AGENT_CAUSE_EXCEPTION_DEPTH:5}
+
+# Force reconnection period
+agent.force_reconnection_period=${SW_AGENT_FORCE_RECONNECTION_PERIOD:1}
+
+# Operation name threshold
+agent.operation_name_threshold=${SW_AGENT_OPERATION_NAME_THRESHOLD:150}
+
+# Keep tracing even if backend is unavailable
+agent.keep_tracing=${SW_AGENT_KEEP_TRACING:false}
+
+# TLS configuration
+agent.force_tls=${SW_AGENT_FORCE_TLS:false}
+agent.ssl_trusted_ca_path=${SW_AGENT_SSL_TRUSTED_CA_PATH:/ca/ca.crt}
+agent.ssl_key_path=${SW_AGENT_SSL_KEY_PATH:}
+agent.ssl_cert_chain_path=${SW_AGENT_SSL_CERT_CHAIN_PATH:}
+
+# Enable the agent
+agent.enable=${SW_AGENT_ENABLE:true}
+
+# Limit IPv4 list size
+osinfo.ipv4_list_size=${SW_AGENT_OSINFO_IPV4_LIST_SIZE:10}
+
+# Collector configuration
+collector.grpc_channel_check_interval=${SW_AGENT_COLLECTOR_GRPC_CHANNEL_CHECK_INTERVAL:30}
+collector.heartbeat_period=${SW_AGENT_COLLECTOR_HEARTBEAT_PERIOD:30}
+collector.properties_report_period_factor=${SW_AGENT_COLLECTOR_PROPERTIES_REPORT_PERIOD_FACTOR:10}
+collector.backend_service=${SW_AGENT_COLLECTOR_BACKEND_SERVICES:127.0.0.1:11800}
+collector.grpc_upstream_timeout=${SW_AGENT_COLLECTOR_GRPC_UPSTREAM_TIMEOUT:30}
+collector.get_profile_task_interval=${SW_AGENT_COLLECTOR_GET_PROFILE_TASK_INTERVAL:20}
+collector.get_agent_dynamic_config_interval=${SW_AGENT_COLLECTOR_GET_AGENT_DYNAMIC_CONFIG_INTERVAL:20}
+collector.is_resolve_dns_periodically=${SW_AGENT_COLLECTOR_IS_RESOLVE_DNS_PERIODICALLY:false}
+
+# Logging configuration
+logging.level=${SW_LOGGING_LEVEL:WARN}
+logging.file_name=${SW_LOGGING_FILE_NAME:skywalking-api.log}
+logging.output=${SW_LOGGING_OUTPUT:FILE}
+logging.dir=${SW_LOGGING_DIR:}
+logging.resolver=${SW_LOGGING_RESOLVER:PATTERN}
+logging.pattern=${SW_LOGGING_PATTERN:%level %timestamp %thread %class : %msg %throwable}
+logging.max_file_size=${SW_LOGGING_MAX_FILE_SIZE:314572800}
+logging.max_history_files=${SW_LOGGING_MAX_HISTORY_FILES:-1}
+
+# Status check configuration
+statuscheck.ignored_exceptions=${SW_STATUSCHECK_IGNORED_EXCEPTIONS:}
+statuscheck.max_recursive_depth=${SW_STATUSCHECK_MAX_RECURSIVE_DEPTH:1}
+
+# Correlation context
+correlation.element_max_number=${SW_CORRELATION_ELEMENT_MAX_NUMBER:3}
+correlation.value_max_length=${SW_CORRELATION_VALUE_MAX_LENGTH:128}
+correlation.auto_tag_keys=${SW_CORRELATION_AUTO_TAG_KEYS:}
+
+# DISABLE JVM METRICS COLLECTION (since you have Prometheus)
+jvm.buffer_size=${SW_JVM_BUFFER_SIZE:0}
+jvm.metrics_collect_period=${SW_JVM_METRICS_COLLECT_PERIOD:0}
+
+# Buffer configuration
+buffer.channel_size=${SW_BUFFER_CHANNEL_SIZE:5}
+buffer.buffer_size=${SW_BUFFER_BUFFER_SIZE:300}
+
+# Profile configuration - ENABLE for performance analysis
+profile.active=${SW_AGENT_PROFILE_ACTIVE:true}
+profile.max_parallel=${SW_AGENT_PROFILE_MAX_PARALLEL:5}
+profile.max_accept_sub_parallel=${SW_AGENT_PROFILE_MAX_ACCEPT_SUB_PARALLEL:5}
+profile.duration=${SW_AGENT_PROFILE_DURATION:10}
+profile.dump_max_stack_depth=${SW_AGENT_PROFILE_DUMP_MAX_STACK_DEPTH:500}
+profile.snapshot_transport_buffer_size=${SW_AGENT_PROFILE_SNAPSHOT_TRANSPORT_BUFFER_SIZE:4500}
+
+# Async profiler - ENABLE for performance analysis
+asyncprofiler.active=${SW_AGENT_ASYNC_PROFILER_ACTIVE:true}
+asyncprofiler.max_duration=${SW_AGENT_ASYNC_PROFILER_MAX_DURATION:1200}
+asyncprofiler.output_path=${SW_AGENT_ASYNC_PROFILER_OUTPUT_PATH:}
+
+# DISABLE METER COLLECTION (since you have Prometheus)
+meter.active=${SW_METER_ACTIVE:false}
+meter.report_interval=${SW_METER_REPORT_INTERVAL:20}
+meter.max_meter_size=${SW_METER_MAX_METER_SIZE:0}
+
+# Log configuration
+log.max_message_size=${SW_GRPC_LOG_MAX_MESSAGE_SIZE:10485760}
+
+# Plugin configuration
+plugin.mount=${SW_MOUNT_FOLDERS:plugins,activations}
+plugin.peer_max_length=${SW_PLUGIN_PEER_MAX_LENGTH:200}
+plugin.exclude_plugins=${SW_EXCLUDE_PLUGINS:}
+
+# Database tracing - ENABLE for slow query detection
+plugin.mongodb.trace_param=${SW_PLUGIN_MONGODB_TRACE_PARAM:true}
+plugin.mongodb.filter_length_limit=${SW_PLUGIN_MONGODB_FILTER_LENGTH_LIMIT:256}
+plugin.elasticsearch.trace_dsl=${SW_PLUGIN_ELASTICSEARCH_TRACE_DSL:true}
+
+# Spring MVC configuration
+plugin.springmvc.use_qualified_name_as_endpoint_name=${SW_PLUGIN_SPRINGMVC_USE_QUALIFIED_NAME_AS_ENDPOINT_NAME:false}
+plugin.toolkit.use_qualified_name_as_operation_name=${SW_PLUGIN_TOOLKIT_USE_QUALIFIED_NAME_AS_OPERATION_NAME:false}
+
+# JDBC tracing - ENABLE for slow query detection
+plugin.jdbc.trace_sql_parameters=${SW_JDBC_TRACE_SQL_PARAMETERS:true}
+plugin.jdbc.sql_parameters_max_length=${SW_PLUGIN_JDBC_SQL_PARAMETERS_MAX_LENGTH:512}
+plugin.jdbc.sql_body_max_length=${SW_PLUGIN_JDBC_SQL_BODY_MAX_LENGTH:2048}
+
+# Solr configuration
+plugin.solrj.trace_statement=${SW_PLUGIN_SOLRJ_TRACE_STATEMENT:false}
+plugin.solrj.trace_ops_params=${SW_PLUGIN_SOLRJ_TRACE_OPS_PARAMS:false}
+
+# Light4J configuration
+plugin.light4j.trace_handler_chain=${SW_PLUGIN_LIGHT4J_TRACE_HANDLER_CHAIN:false}
+
+# Spring transaction configuration
+plugin.springtransaction.simplify_transaction_definition_name=${SW_PLUGIN_SPRINGTRANSACTION_SIMPLIFY_TRANSACTION_DEFINITION_NAME:false}
+
+# Threading configuration
+plugin.jdkthreading.threading_class_prefixes=${SW_PLUGIN_JDKTHREADING_THREADING_CLASS_PREFIXES:}
+
+# HTTP parameter collection - ENABLE for request tracing
+plugin.tomcat.collect_http_params=${SW_PLUGIN_TOMCAT_COLLECT_HTTP_PARAMS:true}
+plugin.springmvc.collect_http_params=${SW_PLUGIN_SPRINGMVC_COLLECT_HTTP_PARAMS:true}
+plugin.httpclient.collect_http_params=${SW_PLUGIN_HTTPCLIENT_COLLECT_HTTP_PARAMS:true}
+plugin.http.http_params_length_threshold=${SW_PLUGIN_HTTP_HTTP_PARAMS_LENGTH_THRESHOLD:1024}
+plugin.http.http_headers_length_threshold=${SW_PLUGIN_HTTP_HTTP_HEADERS_LENGTH_THRESHOLD:2048}
+plugin.http.include_http_headers=${SW_PLUGIN_HTTP_INCLUDE_HTTP_HEADERS:}
+
+# Feign configuration
+plugin.feign.collect_request_body=${SW_PLUGIN_FEIGN_COLLECT_REQUEST_BODY:false}
+plugin.feign.filter_length_limit=${SW_PLUGIN_FEIGN_FILTER_LENGTH_LIMIT:1024}
+plugin.feign.supported_content_types_prefix=${SW_PLUGIN_FEIGN_SUPPORTED_CONTENT_TYPES_PREFIX:application/json,text/}
+
+# InfluxDB configuration
+plugin.influxdb.trace_influxql=${SW_PLUGIN_INFLUXDB_TRACE_INFLUXQL:true}
+
+# Dubbo configuration
+plugin.dubbo.collect_consumer_arguments=${SW_PLUGIN_DUBBO_COLLECT_CONSUMER_ARGUMENTS:false}
+plugin.dubbo.consumer_arguments_length_threshold=${SW_PLUGIN_DUBBO_CONSUMER_ARGUMENTS_LENGTH_THRESHOLD:256}
+plugin.dubbo.collect_provider_arguments=${SW_PLUGIN_DUBBO_COLLECT_PROVIDER_ARGUMENTS:false}
+plugin.dubbo.provider_arguments_length_threshold=${SW_PLUGIN_DUBBO_PROVIDER_ARGUMENTS_LENGTH_THRESHOLD:256}
+
+# Kafka configuration - DISABLE if not needed
+plugin.kafka.bootstrap_servers=${SW_KAFKA_BOOTSTRAP_SERVERS:localhost:9092}
+plugin.kafka.get_topic_timeout=${SW_GET_TOPIC_TIMEOUT:10}
+plugin.kafka.producer_config=${SW_PLUGIN_KAFKA_PRODUCER_CONFIG:}
+plugin.kafka.producer_config_json=${SW_PLUGIN_KAFKA_PRODUCER_CONFIG_JSON:}
+plugin.kafka.topic_meter=${SW_PLUGIN_KAFKA_TOPIC_METER:skywalking-meters}
+plugin.kafka.topic_metrics=${SW_PLUGIN_KAFKA_TOPIC_METRICS:skywalking-metrics}
+plugin.kafka.topic_segment=${SW_PLUGIN_KAFKA_TOPIC_SEGMENT:skywalking-segments}
+plugin.kafka.topic_profiling=${SW_PLUGIN_KAFKA_TOPIC_PROFILINGS:skywalking-profilings}
+plugin.kafka.topic_management=${SW_PLUGIN_KAFKA_TOPIC_MANAGEMENT:skywalking-managements}
+plugin.kafka.topic_logging=${SW_PLUGIN_KAFKA_TOPIC_LOGGING:skywalking-logs}
+plugin.kafka.namespace=${SW_KAFKA_NAMESPACE:}
+plugin.kafka.decode_class=${SW_KAFKA_DECODE_CLASS:}
+
+# Spring annotation configuration
+plugin.springannotation.classname_match_regex=${SW_SPRINGANNOTATION_CLASSNAME_MATCH_REGEX:}
+
+# Toolkit log configuration
+plugin.toolkit.log.transmit_formatted=${SW_PLUGIN_TOOLKIT_LOG_TRANSMIT_FORMATTED:true}
+
+# Redis configurations - ENABLE for database tracing
+plugin.lettuce.trace_redis_parameters=${SW_PLUGIN_LETTUCE_TRACE_REDIS_PARAMETERS:true}
+plugin.lettuce.redis_parameter_max_length=${SW_PLUGIN_LETTUCE_REDIS_PARAMETER_MAX_LENGTH:128}
+plugin.lettuce.operation_mapping_write=${SW_PLUGIN_LETTUCE_OPERATION_MAPPING_WRITE:getset,set,setbit,setex,setnx,setrange,strlen,mset,msetnx,psetex,incr,incrby,incrbyfloat,decr,decrby,append,hmset,hset,hsetnx,hincrby,hincrbyfloat,hdel,rpoplpush,rpush,rpushx,lpush,lpushx,lrem,ltrim,lset,brpoplpush,linsert,sadd,sdiff,sdiffstore,sinterstore,sismember,srem,sunion,sunionstore,sinter,zadd,zincrby,zinterstore,zrange,zrangebylex,zrangebyscore,zrank,zrem,zremrangebylex,zremrangebyrank,zremrangebyscore,zrevrange,zrevrangebyscore,zrevrank,zunionstore,xadd,xdel,del,xtrim}
+plugin.lettuce.operation_mapping_read=${SW_PLUGIN_LETTUCE_OPERATION_MAPPING_READ:getrange,getbit,mget,hvals,hkeys,hlen,hexists,hget,hgetall,hmget,blpop,brpop,lindex,llen,lpop,lrange,rpop,scard,srandmember,spop,sscan,smove,zlexcount,zscore,zscan,zcard,zcount,xget,get,xread,xlen,xrange,xrevrange}
+
+# Neo4j configuration
+plugin.neo4j.trace_cypher_parameters=${SW_PLUGIN_NEO4J_TRACE_CYPHER_PARAMETERS:true}
+plugin.neo4j.cypher_parameters_max_length=${SW_PLUGIN_NEO4J_CYPHER_PARAMETERS_MAX_LENGTH:512}
+plugin.neo4j.cypher_body_max_length=${SW_PLUGIN_NEO4J_CYPHER_BODY_MAX_LENGTH:2048}
+
+# CPU policy configuration - DISABLE
+plugin.cpupolicy.sample_cpu_usage_percent_limit=${SW_SAMPLE_CPU_USAGE_PERCENT_LIMIT:-1}
+
+# Micronaut configuration
+plugin.micronauthttpclient.collect_http_params=${SW_PLUGIN_MICRONAUTHTTPCLIENT_COLLECT_HTTP_PARAMS:true}
+plugin.micronauthttpserver.collect_http_params=${SW_PLUGIN_MICRONAUTHTTPSERVER_COLLECT_HTTP_PARAMS:true}
+
+# Cache configurations - minimal tracing
+plugin.memcached.operation_mapping_write=${SW_PLUGIN_MEMCACHED_OPERATION_MAPPING_WRITE:set,add,replace,append,prepend,cas,delete,touch,incr,decr}
+plugin.memcached.operation_mapping_read=${SW_PLUGIN_MEMCACHED_OPERATION_MAPPING_READ:get,gets,getAndTouch,getKeys,getKeysWithExpiryCheck,getKeysNoDuplicateCheck}
+plugin.ehcache.operation_mapping_write=${SW_PLUGIN_EHCACHE_OPERATION_MAPPING_WRITE:tryRemoveImmediately,remove,removeAndReturnElement,removeAll,removeQuiet,removeWithWriter,put,putAll,replace,removeQuiet,removeWithWriter,removeElement,removeAll,putWithWriter,putQuiet,putIfAbsent,putIfAbsent}
+plugin.ehcache.operation_mapping_read=${SW_PLUGIN_EHCACHE_OPERATION_MAPPING_READ:get,getAll,getQuiet,getKeys,getKeysWithExpiryCheck,getKeysNoDuplicateCheck,releaseRead,tryRead,getWithLoader,getAll,loadAll,getAllWithLoader}
+plugin.guavacache.operation_mapping_write=${SW_PLUGIN_GUAVACACHE_OPERATION_MAPPING_WRITE:put,putAll,invalidate,invalidateAll,invalidateAll,cleanUp}
+plugin.guavacache.operation_mapping_read=${SW_PLUGIN_GUAVACACHE_OPERATION_MAPPING_READ:getIfPresent,get,getAllPresent,size}
+
+# Jedis configuration
+plugin.jedis.trace_redis_parameters=${SW_PLUGIN_JEDIS_TRACE_REDIS_PARAMETERS:true}
+plugin.jedis.redis_parameter_max_length=${SW_PLUGIN_JEDIS_REDIS_PARAMETER_MAX_LENGTH:128}
+plugin.jedis.operation_mapping_write=${SW_PLUGIN_JEDIS_OPERATION_MAPPING_WRITE:getset,set,setbit,setex,setnx,setrange,strlen,mset,msetnx,psetex,incr,incrby,incrbyfloat,decr,decrby,append,hmset,hset,hsetnx,hincrby,hincrbyfloat,hdel,rpoplpush,rpush,rpushx,lpush,lpushx,lrem,ltrim,lset,brpoplpush,linsert,sadd,sdiff,sdiffstore,sinterstore,sismember,srem,sunion,sunionstore,sinter,zadd,zincrby,zinterstore,zrange,zrangebylex,zrangebyscore,zrank,zrem,zremrangebylex,zremrangebyrank,zremrangebyscore,zrevrange,zrevrangebyscore,zrevrank,zunionstore,xadd,xdel,del,xtrim}
+plugin.jedis.operation_mapping_read=${SW_PLUGIN_JEDIS_OPERATION_MAPPING_READ:getrange,getbit,mget,hvals,hkeys,hlen,hexists,hget,hgetall,hmget,blpop,brpop,lindex,llen,lpop,lrange,rpop,scard,srandmember,spop,sscan,smove,zlexcount,zscore,zscan,zcard,zcount,xget,get,xread,xlen,xrange,xrevrange}
+
+# Redisson configuration
+plugin.redisson.trace_redis_parameters=${SW_PLUGIN_REDISSON_TRACE_REDIS_PARAMETERS:true}
+plugin.redisson.redis_parameter_max_length=${SW_PLUGIN_REDISSON_REDIS_PARAMETER_MAX_LENGTH:128}
+plugin.redisson.operation_mapping_write=${SW_PLUGIN_REDISSON_OPERATION_MAPPING_WRITE:getset,set,setbit,setex,setnx,setrange,strlen,mset,msetnx,psetex,incr,incrby,incrbyfloat,decr,decrby,append,hmset,hset,hsetnx,hincrby,hincrbyfloat,hdel,rpoplpush,rpush,rpushx,lpush,lpushx,lrem,ltrim,lset,brpoplpush,linsert,sadd,sdiff,sdiffstore,sinterstore,sismember,srem,sunion,sunionstore,sinter,zadd,zincrby,zinterstore,zrange,zrangebylex,zrangebyscore,zrank,zrem,zremrangebylex,zremrangebyrank,zremrangebyscore,zrevrange,zrevrangebyscore,zrevrank,zunionstore,xadd,xdel,del,xtrim}
+plugin.redisson.operation_mapping_read=${SW_PLUGIN_REDISSON_OPERATION_MAPPING_READ:getrange,getbit,mget,hvals,hkeys,hlen,hexists,hget,hgetall,hmget,blpop,brpop,lindex,llen,lpop,lrange,rpop,scard,srandmember,spop,sscan,smove,zlexcount,zscore,zscan,zcard,zcount,xget,get,xread,xlen,xrange,xrevrange}
+
+# Netty HTTP configuration
+plugin.nettyhttp.collect_request_body=${SW_PLUGIN_NETTYHTTP_COLLECT_REQUEST_BODY:false}
+plugin.nettyhttp.filter_length_limit=${SW_PLUGIN_NETTYHTTP_FILTER_LENGTH_LIMIT:1024}
+plugin.nettyhttp.supported_content_types_prefix=${SW_PLUGIN_NETTYHTTP_SUPPORTED_CONTENT_TYPES_PREFIX:application/json,text/}
+
+# RocketMQ configuration
+plugin.rocketmqclient.collect_message_keys=${SW_PLUGIN_ROCKETMQCLIENT_COLLECT_MESSAGE_KEYS:false}
+plugin.rocketmqclient.collect_message_tags=${SW_PLUGIN_ROCKETMQCLIENT_COLLECT_MESSAGE_TAGS:false}
+
+# Solon configuration
+plugin.solon.http_params_length_threshold=${SW_PLUGIN_SOLON_HTTP_PARAMS_LENGTH_THRESHOLD:1024}
+plugin.solon.include_http_headers=${SW_PLUGIN_SOLON_INCLUDE_HTTP_HEADERS:}
+plugin.solon.http_body_length_threshold=${SW_PLUGIN_SOLON_HTTP_BODY_LENGTH_THRESHOLD:0}
+
+# Caffeine configuration
+plugin.caffeine.operation_mapping_write=${SW_PLUGIN_CAFFEINE_OPERATION_MAPPING_WRITE:put,putAll,remove,clear}
+plugin.caffeine.operation_mapping_read=${SW_PLUGIN_CAFFEINE_OPERATION_MAPPING_READ:getIfPresent,getAllPresent,computeIfAbsent}

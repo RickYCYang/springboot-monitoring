@@ -84,7 +84,7 @@ services:
     ports:
       - '8082:8080'
     environment:
-      - JAVA_OPTS=-javaagent:/app/skywalking-agent/skywalking-agent.jar -Dskywalking.agent.service_name=spring-app-skywalking -Dskywalking.collector.backend_service=skywalking-oap:11800
+      - JAVA_OPTS=-javaagent:/app/skywalking-agent/skywalking-agent.jar -Dskywalking.agent.service_name=spring-app-skywalking -Dskywalking.collector.backend_service=skywalking-oap:11800 -Dskywalking_config=/app/skywalking-agent/config/agent.config.minimal
       - SPRING_PROFILES_ACTIVE=docker
     networks:
       - monitoring-net
@@ -100,7 +100,7 @@ services:
     ports:
       - '8083:8080'
     environment:
-      - JAVA_OPTS=-javaagent:/app/skywalking-agent/skywalking-agent.jar -Dskywalking.agent.service_name=spring-app-skywalking-provider -Dskywalking.collector.backend_service=skywalking-oap:11800
+      - JAVA_OPTS=-javaagent:/app/skywalking-agent/skywalking-agent.jar -Dskywalking.agent.service_name=spring-app-skywalking-provider -Dskywalking.collector.backend_service=skywalking-oap:11800 -Dskywalking_config=/app/skywalking-agent/config/agent.config.minimal
       - SPRING_PROFILES_ACTIVE=docker
     networks:
       - monitoring-net
@@ -127,6 +127,26 @@ services:
     environment:
       - SW_STORAGE=elasticsearch
       - SW_STORAGE_ES_CLUSTER_NODES=elasticsearch:9200
+      # Disable JVM metrics collection (use Prometheus instead)
+      - SW_RECEIVER_JVM=false
+      # Disable meter system (use Prometheus instead)
+      - SW_RECEIVER_METER=false
+      # Keep trace receiver enabled for distributed tracing
+      - SW_RECEIVER_TRACE=true
+      # Keep profile receiver for performance analysis
+      - SW_RECEIVER_PROFILE=true
+      # Disable browser performance monitoring
+      - SW_RECEIVER_BROWSER=false
+      # Disable log receiver if not needed
+      - SW_RECEIVER_LOG=false
+      # Optimize storage settings
+      - SW_STORAGE_ES_BULK_ACTIONS=5000
+      - SW_STORAGE_ES_BULK_SIZE=20
+      - SW_STORAGE_ES_FLUSH_INTERVAL=5
+      # Reduce data retention for metrics (keep traces longer)
+      - SW_CORE_RECORD_DATA_TTL=1
+      - SW_CORE_METRICS_DATA_TTL=1
+      - SW_CORE_TRACE_DATA_TTL=7
     restart: always
     ports:
       - '12800:12800'
