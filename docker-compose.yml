@@ -108,7 +108,7 @@ services:
       - skywalking-oap
 
   skywalking-ui:
-    image: apache/skywalking-ui:9.1.0
+    image: apache/skywalking-ui:10.1.0
     container_name: skywalking-ui
     restart: always
     ports:
@@ -122,7 +122,7 @@ services:
       - monitoring-net
 
   skywalking-oap:
-    image: apache/skywalking-oap-server:9.1.0
+    image: apache/skywalking-oap-server:10.1.0
     container_name: skywalking-oap
     environment:
       - SW_STORAGE=elasticsearch

@@ -21,9 +21,4 @@ public class PostController {
     public List<Post> getAllPosts() {
         return postService.fetchAllPosts();
     }
-
-    @GetMapping("/self")
-    public List<Post> getAllPostsFromSelf() {
-        return postService.getAllPostsFromSelf();
-    }
 }

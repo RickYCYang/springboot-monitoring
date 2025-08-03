@@ -9,8 +9,12 @@ COPY skywalking-agent/ /app/skywalking-agent/
 
 EXPOSE 8080
 
-ENV JAVA_OPTS="-javaagent:/app/skywalking-agent/skywalking-agent.jar \
-  -Dskywalking.agent.service_name=spring-app-skywalking \
-  -Dskywalking.collector.backend_service=skywalking-oap:11800" \
-  SPRING_PROFILES_ACTIVE=docker
+ENV SW_AGENT_NAME=spring-app
+ENV SW_METER_ACTIVE=false
+ENV SW_AGENT_COLLECTOR_BACKEND_SERVICES=skywalking-oap:11800
+
+ENV JAVA_OPTS="-javaagent:/app/skywalking-agent/skywalking-agent.jar" 
+
+ENV SPRING_PROFILES_ACTIVE=docker
+
 ENTRYPOINT ["/bin/sh", "-c", "exec java $JAVA_OPTS -jar app.jar"]
