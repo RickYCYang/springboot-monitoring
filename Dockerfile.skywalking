@@ -10,7 +10,8 @@ COPY skywalking-agent/ /app/skywalking-agent/
 EXPOSE 8080
 
 ENV SW_AGENT_NAME=spring-app
-ENV SW_METER_ACTIVE=false
+ENV SW_METER_ACTIVE="false"
+ENV SW_LOG_REPORTER_ACTIVE="false"
 ENV SW_AGENT_COLLECTOR_BACKEND_SERVICES=skywalking-oap:11800
 
 ENV JAVA_OPTS="-javaagent:/app/skywalking-agent/skywalking-agent.jar" 

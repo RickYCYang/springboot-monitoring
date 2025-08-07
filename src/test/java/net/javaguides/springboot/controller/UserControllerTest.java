@@ -25,76 +25,77 @@ import org.springframework.test.web.servlet.MvcResult;
 @WebMvcTest(UserController.class)
 class UserControllerTest {
 
-    @Autowired
-    private MockMvc mockMvc;
+        @Autowired
+        private MockMvc mockMvc;
 
-    @MockBean
-    private UserService userService;
+        @MockBean
+        private UserService userService;
 
-    @Autowired
-    private ObjectMapper objectMapper; // For JSON serialization/deserialization, convert DTO to
-                                       // JSON or JSON to DTO
+        @Autowired
+        private ObjectMapper objectMapper; // For JSON serialization/deserialization, convert DTO to
+                                           // JSON or JSON to DTO
 
-    @Captor
-    private ArgumentCaptor<UserDto> userDtoCaptor;
+        @Captor
+        private ArgumentCaptor<UserDto> userDtoCaptor;
 
-    private UserDto userDto;
-    private User user;
+        private UserDto userDto;
+        private User user;
 
-    @BeforeEach
-    void setUp() {
-        userDto = new UserDto();
-        userDto.setId(1L);
-        userDto.setFirstName("John");
-        userDto.setLastName("Doe");
-        userDto.setEmail("john@example.com");
+        @BeforeEach
+        void setUp() {
+                userDto = new UserDto();
+                userDto.setId(1L);
+                userDto.setFirstName("John");
+                userDto.setLastName("Doe");
+                userDto.setEmail("john@example.com");
 
-        user = new User();
-        user.setId(1L);
-        user.setFirstName("John");
-        user.setLastName("Doe");
-        user.setEmail("john@example.com");
-    }
+                user = new User();
+                user.setId(1L);
+                user.setFirstName("John");
+                user.setLastName("Doe");
+                user.setEmail("john@example.com");
+        }
 
-    @Test
-    void createUser_shouldReturn201Created() throws Exception {
-        // Arrange
-        // when(userService.createUser(userDto)).thenReturn(userDto);
-        when(userService.createUser(org.mockito.ArgumentMatchers.any(UserDto.class)))
-                .thenReturn(userDto);
-        ArgumentCaptor<UserDto> captor = ArgumentCaptor.forClass(UserDto.class);
+        @Test
+        void createUser_shouldReturn201Created() throws Exception {
+                // Arrange
+                // when(userService.createUser(userDto)).thenReturn(userDto);
+                when(userService.createUser(org.mockito.ArgumentMatchers.any(UserDto.class)))
+                                .thenReturn(userDto);
+                ArgumentCaptor<UserDto> captor = ArgumentCaptor.forClass(UserDto.class);
 
-        // Act
-        // prepare the request to create a user
-        MvcResult result =
-                mockMvc.perform(post("/api/users").contentType(MediaType.APPLICATION_JSON)
-                        .content(objectMapper.writeValueAsString(userDto))).andReturn();
-        String json = result.getResponse().getContentAsString();
-        int status = result.getResponse().getStatus();
+                // Act
+                // prepare the request to create a user
+                MvcResult result = mockMvc
+                                .perform(post("/api/users").contentType(MediaType.APPLICATION_JSON)
+                                                .content(objectMapper.writeValueAsString(userDto)))
+                                .andReturn();
+                String json = result.getResponse().getContentAsString();
+                int status = result.getResponse().getStatus();
 
-        // Assert
-        assertEquals(201, status);
-        assertNotNull(json);
-        // Deserialize the JSON response back to UserDto, and verify the values
-        UserDto responseUser = objectMapper.readValue(json, UserDto.class);
-        assertEquals(userDto.getFirstName(), responseUser.getFirstName());
-        assertEquals(user.getLastName(), responseUser.getLastName());
-        assertEquals(userDto.getEmail(), responseUser.getEmail());
+                // Assert
+                assertEquals(201, status);
+                assertNotNull(json);
+                // Deserialize the JSON response back to UserDto, and verify the values
+                UserDto responseUser = objectMapper.readValue(json, UserDto.class);
+                assertEquals(userDto.getFirstName(), responseUser.getFirstName());
+                assertEquals(user.getLastName(), responseUser.getLastName());
+                assertEquals(userDto.getEmail(), responseUser.getEmail());
 
-        // Verify that the userService.createUser method was called with the correct UserDto
-        verify(userService).createUser(org.mockito.ArgumentMatchers.any(UserDto.class));
+                // Verify that the userService.createUser method was called with the correct UserDto
+                verify(userService).createUser(org.mockito.ArgumentMatchers.any(UserDto.class));
 
-        // Verify that the captured UserDto matches the expected values
-        verify(userService).createUser(captor.capture());
-        UserDto capturedDto = captor.getValue();
-        assertEquals(userDto.getFirstName(), capturedDto.getFirstName());
-        assertEquals(user.getLastName(), capturedDto.getLastName());
-        assertEquals(userDto.getEmail(), capturedDto.getEmail());
+                // Verify that the captured UserDto matches the expected values
+                verify(userService).createUser(captor.capture());
+                UserDto capturedDto = captor.getValue();
+                assertEquals(userDto.getFirstName(), capturedDto.getFirstName());
+                assertEquals(user.getLastName(), capturedDto.getLastName());
+                assertEquals(userDto.getEmail(), capturedDto.getEmail());
 
-        // Verify that the userService.createUser method was called with the correct UserDto
-        verify(userService)
-                .createUser(argThat(dto -> dto.getFirstName().equals(userDto.getFirstName())
-                        && dto.getLastName().equals(userDto.getLastName())
-                        && dto.getEmail().equals(userDto.getEmail())));
-    }
+                // Verify that the userService.createUser method was called with the correct UserDto
+                verify(userService).createUser(
+                                argThat(dto -> dto.getFirstName().equals(userDto.getFirstName())
+                                                && dto.getLastName().equals(userDto.getLastName())
+                                                && dto.getEmail().equals(userDto.getEmail())));
+        }
 }
