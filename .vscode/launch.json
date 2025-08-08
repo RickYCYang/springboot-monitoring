@@ -5,10 +5,13 @@
       "name": "Launch with Sentry Agent",
       "request": "launch",
       "mainClass": "net.javaguides.springboot.SpringbootApplication",
-      "vmArgs": "-Dsentry.auto-init=false -javaagent:sentry-opentelemetry-agent-8.18.0/sentry-opentelemetry-agent-8.18.0.jar",
+      "vmArgs": "-javaagent:sentry-opentelemetry-agent-8.18.0/sentry-opentelemetry-agent-8.18.0.jar",
       "env": {
         "SENTRY_AUTO_INIT": "false",
-        "SENTRY_AUTH_TOKEN": "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"
+        "SENTRY_AUTH_TOKEN": "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",
+        "OTEL_LOGS_EXPORTER": "none",
+        "OTEL_METRICS_EXPORTER": "none",
+        "OTEL_TRACES_EXPORTER": "otlp"
       }
     }
   ]

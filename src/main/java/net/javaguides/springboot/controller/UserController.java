@@ -23,6 +23,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PutMapping;
 
+import java.lang.Exception;
 import io.sentry.Sentry;
 
 
@@ -41,7 +42,7 @@ public class UserController {
 
 
     // http://localhost:8080/api/users/hello
-    @GetMapping("hello")
+    @GetMapping("test")
     public String hello() {
         logger.info("Hello, World!");
         try {
@@ -50,6 +51,13 @@ public class UserController {
             Sentry.captureException(e);
             return "Hello, World!";
         }
+    }
+
+    // http://localhost:8080/api/users/hello
+    @GetMapping("test2")
+    public String test2() {
+        logger.info("This is test2");
+        return userService.test2();
     }
 
     // http://localhost:8080/api/users

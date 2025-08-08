@@ -17,4 +17,6 @@ public interface UserService {
     UserDto getUserByIdSql(long id);
 
     UserDto getUserByEmailSql(String email);
+
+    String test2();
 }

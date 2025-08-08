@@ -4,6 +4,8 @@ import java.util.List;
 import java.util.Optional;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
+import io.sentry.Sentry;
+import jakarta.websocket.OnClose;
 import lombok.AllArgsConstructor;
 import net.javaguides.springboot.dto.UserDto;
 import net.javaguides.springboot.entity.User;
@@ -12,6 +14,8 @@ import net.javaguides.springboot.exception.ResourceNotFoundException;
 import net.javaguides.springboot.mapper.AutoUserMapper;
 import net.javaguides.springboot.repository.UserRepository;
 import net.javaguides.springboot.service.UserService;
+
+import java.lang.Exception;
 
 @Service
 @AllArgsConstructor
@@ -98,6 +102,16 @@ public class UserServiceImpl implements UserService {
     public UserDto getUserByEmailSql(String email) {
         User user = userRepository.findByEmailSql(email);
         return AutoUserMapper.MAPPER.mapToUserDto(user); // convert to DTO by MapStruct lib
+    }
+
+    @Override
+    public String test2() {
+        try {
+            throw new Exception("raise exception in service");
+        } catch (Exception e) {
+            Sentry.captureException(e);
+            return "Hello, World!";
+        }
     }
 
 

@@ -1,6 +1,5 @@
 package net.javaguides.springboot.exception;
 
-import java.lang.reflect.Field;
 import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.List;
