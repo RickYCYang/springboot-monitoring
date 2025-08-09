@@ -1,0 +1,78 @@
+{
+  "formatVersion": "1.1",
+  "component": {
+    "group": "io.sentry",
+    "module": "sentry-opentelemetry-agent",
+    "version": "8.18.0",
+    "attributes": {
+      "org.gradle.status": "release"
+    }
+  },
+  "createdBy": {
+    "gradle": {
+      "version": "8.14.3"
+    }
+  },
+  "variants": [
+    {
+      "name": "sourcesElements",
+      "attributes": {
+        "org.gradle.category": "documentation",
+        "org.gradle.dependency.bundling": "external",
+        "org.gradle.docstype": "sources",
+        "org.gradle.usage": "java-runtime"
+      },
+      "files": [
+        {
+          "name": "sentry-opentelemetry-agent-8.18.0-sources.jar",
+          "url": "sentry-opentelemetry-agent-8.18.0-sources.jar",
+          "size": 1019,
+          "sha512": "6c9db03de4ed4070513352af1798a62559024e5fd01551663a6a92b70ba64996c4575b3fbb59ed391a8458c868fe50ad354baa90d3d1da2bf7dbb8323fec79e2",
+          "sha256": "d5bbe02ce3901b6246b29e05b94dae0f5e4f05eb578422d0c118a9a7a8d889de",
+          "sha1": "12a990469903c5300ef7554f625f5bea97a10907",
+          "md5": "27a8fe28a6ba8782e48c5dd9dd9c5ce0"
+        }
+      ]
+    },
+    {
+      "name": "javadocElements",
+      "attributes": {
+        "org.gradle.category": "documentation",
+        "org.gradle.dependency.bundling": "external",
+        "org.gradle.docstype": "javadoc",
+        "org.gradle.usage": "java-runtime"
+      },
+      "files": [
+        {
+          "name": "sentry-opentelemetry-agent-8.18.0-javadoc.jar",
+          "url": "sentry-opentelemetry-agent-8.18.0-javadoc.jar",
+          "size": 79924,
+          "sha512": "00cdde253f0b121f615d307cf2c452c2d2176e32491f4cbfbac39c4fcee8f68c38a35aa345dade3aede2cc5e5dc732d1db9917a9dc3b52fdf751e15e28f8ef1d",
+          "sha256": "1b53d4ad41e70efabdf9af4763fb8d8882eabeee24282f3d749958a9d4c596b4",
+          "sha1": "5542937e0d82c4157867735bb0f0c024c94376af",
+          "md5": "c308f2e14c8bf654da6022959bfc980c"
+        }
+      ]
+    },
+    {
+      "name": "shadowRuntimeElements",
+      "attributes": {
+        "org.gradle.category": "library",
+        "org.gradle.dependency.bundling": "shadowed",
+        "org.gradle.libraryelements": "jar",
+        "org.gradle.usage": "java-runtime"
+      },
+      "files": [
+        {
+          "name": "sentry-opentelemetry-agent-8.18.0.jar",
+          "url": "sentry-opentelemetry-agent-8.18.0.jar",
+          "size": 21899818,
+          "sha512": "9c26e5007c317a45e9a0b4225d133f1738abe7606859297440160a0a141e2244872d59da11191c72050a97449d7001d9d860cb1671341949d8c92971a5d12b7d",
+          "sha256": "34f6c246f09767f354ff20ca6b64656ab4108d5d956feb698324ddcf3f9d96d9",
+          "sha1": "d8d672e23d816f4f198def0fbd6c5281a7249a76",
+          "md5": "066836d25c29a40786760c2c18e07f17"
+        }
+      ]
+    }
+  ]
+}
