@@ -9,9 +9,6 @@
       "env": {
         "SENTRY_AUTO_INIT": "false",
         "SENTRY_AUTH_TOKEN": "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",
-        "OTEL_LOGS_EXPORTER": "none",
-        "OTEL_METRICS_EXPORTER": "none",
-        "OTEL_TRACES_EXPORTER": "otlp"
       }
     }
   ]
