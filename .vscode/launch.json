@@ -5,7 +5,7 @@
       "name": "Launch with Sentry Agent",
       "request": "launch",
       "mainClass": "net.javaguides.springboot.SpringbootApplication",
-      "vmArgs": "-javaagent:sentry-opentelemetry-agent-8.18.0/sentry-opentelemetry-agent-8.18.0.jar",
+      // "vmArgs": "-javaagent:sentry-opentelemetry-agent-8.18.0/sentry-opentelemetry-agent-8.18.0.jar",
       "env": {
         "SENTRY_AUTO_INIT": "false",
         "SENTRY_AUTH_TOKEN": ${SENTRY_AUTH_TOKEN}
